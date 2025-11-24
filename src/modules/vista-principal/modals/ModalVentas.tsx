@@ -52,7 +52,7 @@ const ModalVentas: React.FC<ModalVentasProps> = ({
 
       console.log(` Login exitoso como ${user.role}:`, user.nombre);
 
-      // 🔑 Redirigir al Front de Ventas pasando el token como query param
+      //  Redirigir al Front de Ventas pasando el token como query param
       const token = result.token;
       const ventasUrl = `${import.meta.env.VITE_FRONT_URL}/ventas?token=${token}`;
       console.log(" Redirigiendo a Módulo de Ventas con token:", ventasUrl);
