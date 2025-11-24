@@ -12,10 +12,7 @@ interface LoginForm {
   credencial: string;
 }
 
-const ModalVentas: React.FC<ModalVentasProps> = ({
-  showModal,
-  onClose,
-}) => {
+const ModalVentas: React.FC<ModalVentasProps> = ({ showModal, onClose }) => {
   const [formData, setFormData] = useState<LoginForm>({
     gmail: "",
     credencial: "",
@@ -33,16 +30,17 @@ const ModalVentas: React.FC<ModalVentasProps> = ({
     setError("");
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      const result = await userService.login(formData.gmail, formData.credencial);
+      const result = await userService.login(
+        formData.gmail,
+        formData.credencial
+      );
       const user = result.user;
-      console.log("📨 Respuesta del backend:", result);
-      console.log("👤 Usuario autenticado:", user);
-      console.log("🎫 Token recibido:", result.token);
+      console.log(" Respuesta del backend:", result);
 
       if (user.role !== "COLABORADOR" && user.role !== "ADMIN") {
         throw new Error(
@@ -52,13 +50,12 @@ const ModalVentas: React.FC<ModalVentasProps> = ({
 
       console.log(` Login exitoso como ${user.role}:`, user.nombre);
 
-      //  Redirigir al Front de Ventas pasando el token como query param
       const token = result.token;
-      const ventasUrl = `${import.meta.env.VITE_FRONT_URL}/ventas?token=${token}`;
-      console.log(" Redirigiendo a Módulo de Ventas con token:", ventasUrl);
+      //const ventasUrl = `http://localhost:5173/ventas?token=${token}`;
+      const ventasUrl = `https://front2-sistema-ferreteria.netlify.app/ventas?token=${token}`;
+      console.log("🔗 Redirigiendo a:", ventasUrl);
 
       window.location.href = ventasUrl;
-
       onClose();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

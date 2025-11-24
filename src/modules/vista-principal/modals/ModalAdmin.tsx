@@ -40,22 +40,22 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
     setError("");
 
     try {
-      const response = await userService.getUsers();
-      const users = response.data;
-      const user = users.find(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (u: any) =>
-          u.gmail === formData.gmail && u.credencial === formData.credencial
-      );
-      if (!user) {
-        throw new Error("Credenciales inválidas");
-      }
+      //  Usa el servicio real de login
+      const result = await userService.login(formData.gmail, formData.credencial);
+      const user = result.user;
+
+      //  Verifica que sea ADMIN
       if (user.role !== "ADMIN") {
-        throw new Error("No tienes permisos de administrador");
+        throw new Error("Solo usuarios ADMIN pueden acceder a esta sección");
       }
-      console.log(" Login exitoso como ADMIN:", user.nombre);
+
+      console.log(" Login exitoso como ADMIN");
+      
+      //  Redirige a UserManager
+      window.location.href = "/usermanager";
+      
       onLoginSuccess();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || "Error en la autenticación");
     } finally {
@@ -66,7 +66,6 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 scale-100">
-        {/* Header del Modal */}
         <div className="bg-primary p-6 rounded-t-2xl">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold text-white flex items-center">
@@ -76,7 +75,6 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
           </div>
         </div>
 
-        {/* Mensaje de error */}
         {error && (
           <div className="mx-6 mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-xl flex items-center">
             <i className="bx bx-error-circle mr-2"></i>
@@ -84,7 +82,6 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
           </div>
         )}
 
-        {/* Formulario del Modal */}
         <form onSubmit={handleSubmit} className="p-6" noValidate>
           <div className="space-y-6 mb-6">
             <div>
@@ -95,7 +92,7 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
               <input
                 type="email"
                 name="gmail"
-                placeholder="Ingresa tu email"
+                placeholder="admin@gmail.com"
                 value={formData.gmail}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-100 transition-all duration-200"
@@ -112,7 +109,7 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
               <input
                 type="password"
                 name="credencial"
-                placeholder="Ingresa tu contraseña"
+                placeholder="ad2025"
                 value={formData.credencial}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-primary focus:ring-2 focus:ring-green-100 transition-all duration-200"
@@ -122,7 +119,6 @@ const ModalAdmin: React.FC<ModalAdminProps> = ({
             </div>
           </div>
 
-          {/* Botones del Modal */}
           <div className="flex gap-4 pt-4 border-t border-gray-200">
             <button
               type="submit"

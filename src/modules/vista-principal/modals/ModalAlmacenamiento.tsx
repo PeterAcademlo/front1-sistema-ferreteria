@@ -51,15 +51,15 @@ const handleSubmit = async (e: React.FormEvent) => {
       );
     }
 
-    console.log(`✅ Login exitoso como ${user.role}:`, user.nombre);
+    console.log(` Login exitoso como ${user.role}:`, user.nombre);
 
-    // 🔑 Redirigir al Front 2 pasando el token como query param
+    //  Redirigir al Front 2 pasando el token como query param
     const token = result.token;
-    const front2Url = `${import.meta.env.VITE_FRONT_URL}/almacenamiento?token=${token}`;
-    console.log("🚀 Redirigiendo a Front 2 con token:", front2Url);
+    //const AlmacenamientoUrl = `http://localhost:5173/almacenamiento?token=${token}`; 
+    const AlmacenamientoUrl = `https://front2-sistema-ferreteria.netlify.app/almacenamiento?token=${token}`;
+    console.log(" Redirigiendo a Front 2 con token:", AlmacenamientoUrl);
 
-    window.location.href = front2Url;
-
+    window.location.href = AlmacenamientoUrl;
     onClose();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
@@ -69,7 +69,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     setLoading(false);
   }
 };
-
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center p-4 z-50">

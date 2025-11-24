@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 import ModalUpdateUser from "../modals/ModalUpdateUser";
 import ModalDeleteUser from "../modals/ModalDeleteUser";
 import type { User, UserFormData } from "../../../types/user";
@@ -10,7 +10,7 @@ interface UserManagerProps {
   onBack: () => void;
 }
 
-const UserManager: React.FC<UserManagerProps> = ({ onBack }) => {
+const UserManager: React.FC<UserManagerProps> = () => {
   const {
     users,
     loading,
@@ -92,13 +92,15 @@ const UserManager: React.FC<UserManagerProps> = ({ onBack }) => {
     setFormData(newData);
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-linear-to-br from-green-50 to-green-100 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="inline-flex items-center justify-center mb-4 p-4 w-full bg-primary rounded-2xl relative">
           <button
-            onClick={onBack}
+            onClick={() => navigate("/")}
             className="absolute left-6 bg-white text-primary hover:bg-gray-100 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110"
             title="Volver al inicio"
           >
